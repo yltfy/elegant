@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.elegant.dao.shop.IShopMapper" >
+	<select id="findShops" resultType="Shop" parameterType="TzParams">
+		select 
+			id,
+			shopname,
+			shopcode,
+			status,
+			is_open as isOpen,
+			addtime,
+			applicant,
+			examineer,
+			location,
+			addr,
+			business,
+			img,
+			type,
+			lng,
+			lat,
+			manager_id as managerId,
+			agents_id as agentsId,
+			self_supply as selfSupply,
+			rfid_cost as rfidCost,
+			is_hosted as isHosted
+		FROM
+			estore_shop 
+		<trim prefix="WHERE" prefixOverrides="AND | OR">  
+			<if test="@com.tz.util.TmStringUtils@isNotEmpty(keyword)">
+				and name LIKE '%${keyword}%'
+			</if>
+		</trim>
+		ORDER BY ${order}
+	</select>
+	
+	<select id="count" resultType="int" parameterType="TzParams">
+		SELECT
+			count(1) 
+		FROM
+			estore_shop 
+		<trim prefix="WHERE" prefixOverrides="AND | OR">  
+			<if test="@com.tz.util.TmStringUtils@isNotEmpty(keyword)">
+				and name LIKE '%${keyword}%'
+			</if>
+		</trim>
+	</select>
+</mapper>
